@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, lib, inputs, ... }:
 
 let
   nvidia-offload = pkgs.writeShellScriptBin "nvidia-offload" ''
@@ -96,11 +96,13 @@ in
 
   # Forgive me Stallman Senpai
   nixpkgs.config.allowUnfree = true;
-  # List packages installed in system profile. To search, run:
-  nixpkgs.overlays = [
-    (import (builtins.fetchTarball https://github.com/nix-community/emacs-overlay/archive/master.tar.gz))
-  ];
-  # $ nix search wget
+  nixpkgs.overlays = [ inputs.emacs-overlay.overlay ];
+  nix = {
+     package = pkgs.nixFlakes;
+     extraOptions = lib.optionalString (config.nix.package == pkgs.nixFlakes)
+       "experimental-features = nix-command flakes";
+  };
+
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     git

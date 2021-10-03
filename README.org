@@ -1,0 +1,30 @@
+* My Personal NixOS and Home-Manager config
+
+Eventual configuration home for all of my NixOS and non-NixOS machines.
+
+** Directory Structure
+Although it's still a work in progress, the eventual folder structure is as follows:
+
+*** Systems
+This contains system-specific configuration for each of the NixOS machines that I managed.
+Currently, we just have the Lappy, but more are incoming.
+
+**** TODO command-center
+**** TODO home-server
+**** TODO work macbook
+
+*** Users
+This contains home-manager configuration for user-level programs that I want on every machine.
+
+**** TODO bpm
+
+** Installation
+To rebuild the installation for the <hostname> system:
+#+BEGIN_SRC bash
+sudo nixos-rebuild switch --flake '.#<hostname>'
+#+END_SRC
+
+To rebuild the installation for the <user> user:
+#+BEGIN_SRC bash
+sudo home-manager switch --flake '.#<user>'
+#+END_SRC
